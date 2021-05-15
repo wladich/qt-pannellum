@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="panellum/pannellum.js"></script>
+    <link rel="stylesheet" href="panellum/pannellum.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body, html, .panorama {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        "use strict";
+
+        class Client {
+            currentContainer = null;
+
+            newViewer(config) {
+                if (this.currentContainer) {
+                    document.body.removeChild(this.currentContainer);
+                }
+                this.currentContainer = document.createElement('div');
+                this.currentContainer.className = 'panorama';
+                document.body.appendChild(this.currentContainer);
+                window.pannellum.viewer(this.currentContainer, config);
+            }
+        }
+        window.client = new Client();
+    </script>
+
+</head>
+<body>
+</body>
+</html>
