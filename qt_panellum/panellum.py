@@ -16,7 +16,7 @@ class Panellum(QWebEngineView):
         html_dir = pkg_resources.resource_filename(__name__, 'html')
         self.setUrl(QUrl('file://' + os.path.join(html_dir, 'index.html')))
 
-    def eval_js(self, func, args):
+    def eval_js(self, func, args=None):
         return self.page().runJavaScript('%s(%s)' % (func, json.dumps(args)))
 
     def init_viewer(self, config):
@@ -27,3 +27,5 @@ class Panellum(QWebEngineView):
                 config['panorama'] = 'data:;base64,' + binascii.b2a_base64(f.read()).decode('ascii')
         return self.eval_js('client.newViewer', config)
 
+    def remove_viewer(self):
+        self.eval_js('client.destroyViewer')

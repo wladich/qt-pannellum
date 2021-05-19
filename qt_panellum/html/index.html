@@ -25,10 +25,14 @@
         class Client {
             currentContainer = null;
 
-            newViewer(config) {
+            destroyViewer() {
                 if (this.currentContainer) {
                     document.body.removeChild(this.currentContainer);
                 }
+            }
+
+            newViewer(config) {
+                this.destroyViewer();
                 this.currentContainer = document.createElement('div');
                 this.currentContainer.className = 'panorama';
                 document.body.appendChild(this.currentContainer);
