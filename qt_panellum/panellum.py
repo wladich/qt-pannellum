@@ -29,3 +29,6 @@ class Panellum(QWebEngineView):
 
     def remove_viewer(self):
         self.eval_js('client.destroyViewer')
+
+    def viewer_command(self, method, args=None):
+        self.eval_js('client.viewerCommand', [method] + args or [])

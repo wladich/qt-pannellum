@@ -24,6 +24,7 @@
 
         class Client {
             currentContainer = null;
+            viewer = null;
 
             destroyViewer() {
                 if (this.currentContainer) {
@@ -36,7 +37,11 @@
                 this.currentContainer = document.createElement('div');
                 this.currentContainer.className = 'panorama';
                 document.body.appendChild(this.currentContainer);
-                window.pannellum.viewer(this.currentContainer, config);
+                this.viewer = window.pannellum.viewer(this.currentContainer, config);
+            }
+
+            viewerCommand([method, ...args]) {
+                this.viewer[method](...args);
             }
         }
         window.client = new Client();
