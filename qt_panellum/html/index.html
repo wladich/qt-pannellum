@@ -23,8 +23,11 @@
         "use strict";
 
         class Client {
-            currentContainer = null;
-            viewer = null;
+
+            constructor() {
+                this.currentContainer = null;
+                this.viewer = null;
+            }
 
             destroyViewer() {
                 if (this.currentContainer) {
