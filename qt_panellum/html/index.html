@@ -46,7 +46,7 @@
             }
 
             viewerCommand([method, ...args]) {
-                this.viewer[method](...args);
+                return this.viewer[method](...args);
             }
         }
         window.client = new Client();

@@ -36,4 +36,4 @@ class Panellum(QWebView):
         self.eval_js('client.destroyViewer')
 
     def viewer_command(self, method, *args):
-        self.eval_js('client.viewerCommand', [method] + list(args))
+        return self.eval_js('client.viewerCommand', [method] + list(args))
