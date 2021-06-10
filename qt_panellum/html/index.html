@@ -31,6 +31,10 @@
             }
 
             destroyViewer() {
+                if (this.viewer) {
+                    this.viewer.destroy();
+                    this.viewer = null;
+                }
                 if (this.currentContainer) {
                     document.body.removeChild(this.currentContainer);
                     this.currentContainer = null;
