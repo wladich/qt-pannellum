@@ -2,14 +2,26 @@
 import binascii
 import json
 import os
+from typing import TypeAlias, TypedDict
 
 import pkg_resources
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebKit import QWebSettings
 from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QWidget
 
 
-def file_to_data_url(path):
+class Hotspot(TypedDict):
+    yaw: float
+    pitch: float
+    type: str
+    text: str | None
+
+
+PanellumConfig: TypeAlias = dict[str, float | str | list[Hotspot]]
+
+
+def file_to_data_url(path: str) -> str:
     with open(path, "rb") as f:
         raw_data = f.read()
         encoded = binascii.b2a_base64(raw_data, newline=False)
@@ -17,8 +29,8 @@ def file_to_data_url(path):
 
 
 class Panellum(QWebView):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
         settings = self.page().settings()
         settings.setAttribute(QWebSettings.DeveloperExtrasEnabled, True)
         settings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, False)
@@ -27,20 +39,23 @@ class Panellum(QWebView):
         html_dir = pkg_resources.resource_filename(__name__, "html")
         self.setUrl(QUrl("file://" + os.path.join(html_dir, "index.html")))
 
-    def eval_js(self, func, args=None):
+    def eval_js(self, func: str, args: object = None) -> object:
         js_script = "%s(%s)" % (func, json.dumps(args))
-        return self.page().mainFrame().evaluateJavaScript(js_script)
+        result: object = self.page().mainFrame().evaluateJavaScript(js_script)
+        return result
 
-    def init_viewer(self, config):
+    def init_viewer(self, config: PanellumConfig) -> None:
         panorama_url = config.get("panorama", "")
+        assert isinstance(panorama_url, str)
         local_prefix = "file://"
         if panorama_url.startswith(local_prefix):
             path = panorama_url[len(local_prefix) :]
             config["panorama"] = file_to_data_url(path)
-        return self.eval_js("client.newViewer", config)
+        self.eval_js("client.newViewer", config)
 
-    def remove_viewer(self):
+    def remove_viewer(self) -> None:
         self.eval_js("client.destroyViewer")
 
-    def viewer_command(self, method, *args):
-        return self.eval_js("client.viewerCommand", [method] + list(args))
+    def viewer_command(self, method: str, *args: object) -> object:
+        cmd_args = [method] + list(args)
+        return self.eval_js("client.viewerCommand", cmd_args)
