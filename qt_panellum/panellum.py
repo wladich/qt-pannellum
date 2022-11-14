@@ -29,6 +29,8 @@ def file_to_data_url(path: str) -> str:
 
 
 class Panellum(QWebView):
+    css: str | None = None
+
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         settings = self.page().settings()
@@ -38,6 +40,8 @@ class Panellum(QWebView):
 
         html_dir = pkg_resources.resource_filename(__name__, "html")
         self.setUrl(QUrl("file://" + os.path.join(html_dir, "index.html")))
+        if self.css:
+            self.insert_style(self.css)
 
     def eval_js(self, func: str, args: object = None) -> object:
         js_script = "%s(%s)" % (func, json.dumps(args))
@@ -59,3 +63,13 @@ class Panellum(QWebView):
     def viewer_command(self, method: str, *args: object) -> object:
         cmd_args = [method] + list(args)
         return self.eval_js("client.viewerCommand", cmd_args)
+
+    def insert_style(self, css: str) -> None:
+        func = """
+        (function(css){
+            function insertCss() {
+                document.head.insertAdjacentHTML("beforeend", "<style>" + css + "</style>");
+            }
+            window.addEventListener('load', insertCss);
+        })"""
+        self.eval_js(func, css)
