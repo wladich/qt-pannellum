@@ -2,20 +2,21 @@
 import binascii
 import json
 import os
-from typing import TypeAlias, TypedDict
+from typing import TypeAlias
 
 import pkg_resources
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebKit import QWebSettings
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QWidget
+from typing_extensions import NotRequired, TypedDict
 
 
 class Hotspot(TypedDict):
     yaw: float
     pitch: float
     type: str
-    text: str | None
+    text: NotRequired[str]
 
 
 PanellumConfig: TypeAlias = dict[str, float | str | list[Hotspot]]
