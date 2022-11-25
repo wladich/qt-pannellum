@@ -17,6 +17,8 @@ class Hotspot(TypedDict):
     pitch: float
     type: str
     text: NotRequired[str]
+    cssClass: NotRequired[str]
+    id: NotRequired[str]
 
 
 PanellumConfig: TypeAlias = dict[str, float | str | list[Hotspot]]
@@ -56,6 +58,9 @@ class Panellum(QWebView):
         if panorama_url.startswith(local_prefix):
             path = panorama_url[len(local_prefix) :]
             config["panorama"] = file_to_data_url(path)
+        # Workaround for late initialization of hotspots list in panellum JS code
+        if not config.get("hotSpots"):
+            config["hotSpots"] = [{}]  # type: ignore[typeddict-item]
         self.eval_js("client.newViewer", config)
 
     def remove_viewer(self) -> None:
@@ -74,3 +79,9 @@ class Panellum(QWebView):
             window.addEventListener('load', insertCss);
         })"""
         self.eval_js(func, css)
+
+    def add_hot_spot(self, hotspot: Hotspot) -> None:
+        self.viewer_command("addHotSpot", hotspot)
+
+    def remove_hot_spot(self, hotspot_id: str) -> None:
+        self.viewer_command("removeHotSpot", hotspot_id)
