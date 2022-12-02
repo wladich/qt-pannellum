@@ -60,7 +60,9 @@ class Panellum(QWebView):
             config["panorama"] = file_to_data_url(path)
         # Workaround for late initialization of hotspots list in panellum JS code
         if not config.get("hotSpots"):
-            config["hotSpots"] = [{}]  # type: ignore[typeddict-item]
+            config["hotSpots"] = [
+                {"yaw": 0, "pitch": 0, "cssClass": "not-exists", "type": "info"}
+            ]
         self.eval_js("client.newViewer", config)
 
     def remove_viewer(self) -> None:
