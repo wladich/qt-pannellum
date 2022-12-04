@@ -1,6 +1,7 @@
 [MASTER]
 ; ignore=
 extension-pkg-whitelist=PyQt5
+ignore-patterns=^venv$
 
 [FORMAT]
 # Maximum number of characters on a single line.
