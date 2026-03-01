@@ -4,43 +4,39 @@ Available targets:
 	pylint
 	flake8
 	mypy
-	check
-	venv [path=PATH_TO_VENV]
-		create venv for development
-		default path=./venv
-	clean
-
-	common arguments:
-		python=PYTHON3_EXECUTABLE, defaults to python3
+	check - all static checks
+	test - run pytest tests
+	venv - create or update venv for development
+	clean - clean caches
 endef
 export help
 
-path?=./venv
-python?=python3
+TOOL_PREFIX=./.venv/bin/
 
 help:
 	@echo "$$help"
 
-pylint:
-	pylint . --recursive y
+pylint: venv
+	$(TOOL_PREFIX)pylint . --recursive y
 
-black:
-	black --diff --check -q .
+black: venv
+	$(TOOL_PREFIX)black --diff --check -q .
 
-flake8:
-	flake8 .
+flake8: venv
+	$(TOOL_PREFIX)flake8 .
 
-mypy:
-	mypy .
+mypy: venv
+	$(TOOL_PREFIX)mypy .
 
-check: pylint black flake8 mypy
+test: venv
+	pytest
+
+check: mypy pylint flake8 black test
 	@echo All checks passed.
 
 .PHONY: venv
 venv:
-	@echo Will install at $(path)
-	$(python) -m venv $(path)
-	SETUPTOOLS_ENABLE_FEATURES="legacy-editable" $(path)/bin/pip install -e ".[test]"
+	uv sync
 
 clean:
-	rm -rf ./mypy_cache ./*.egg-info ./.mypy_cache ./__pycache__ ./.pytest_cache ./venv ./build
+	rm -rf ./mypy_cache ./*.egg-info ./.mypy_cache ./__pycache__ ./.pytest_cache ./.venv ./build

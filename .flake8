@@ -6,7 +6,7 @@ max-line-length = 97
 import-order-style=pycharm
 ; Do not check files:
 exclude =
-    venv
+    .venv
 ; top level package name to allow absolute imports
 ; application_import_names =
 ignore =

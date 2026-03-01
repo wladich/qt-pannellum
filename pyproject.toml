@@ -1,3 +1,32 @@
+[project]
+name = "qt_panellum"
+version = "0.0.3"
+requires-python = ">=3.11"
+dependencies = [
+    "pyqt5",
+    "PyQt5-sip==12.17.2",
+    "typing-extensions==4.*",
+    "setuptools<82",
+]
+
+[tool.uv.sources]
+pyqt5 = { url = "https://github.com/wladich/PyQt_build/releases/download/2.0/PyQt5-5.15.2-5.15.2-cp37-abi3-manylinux1_x86_64.whl" }
+
+[dependency-groups]
+dev = [
+    "black==22.10.0",
+    "flake8<6.0.0",
+    "flake8-import-order==0.18.2",
+    "mypy==0.991",
+    "pylint==2.15.8",
+    "pyqt5-stubs==5.15.6.0",
+    "pytest==7.2.0",
+    "types-setuptools<82",
+]
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.21,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
