@@ -1,6 +1,6 @@
 [project]
 name = "qt_panellum"
-version = "0.0.3"
+version = "0.0.4"
 requires-python = ">=3.11"
 dependencies = [
     "pyqt5",
@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-pyqt5 = { url = "https://github.com/wladich/PyQt_build/releases/download/2.0/PyQt5-5.15.2-5.15.2-cp37-abi3-manylinux1_x86_64.whl" }
+pyqt5 = { url = "https://github.com/wladich/PyQt_build/releases/download/3.0/PyQt5-5.15.2-5.15.2-cp37-abi3-manylinux1_x86_64.whl" }
 
 [dependency-groups]
 dev = [
