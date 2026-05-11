@@ -1,9 +1,9 @@
 define help
 Available targets:
 	help
-	pylint
-	flake8
 	mypy
+	ruff
+	format - properly format all files
 	check - all static checks
 	venv - create or update venv for development
 	clean - clean caches
@@ -15,14 +15,13 @@ TOOL_PREFIX=./.venv/bin/
 help:
 	@echo "$$help"
 
-pylint: venv
-	$(TOOL_PREFIX)pylint . --recursive y
+ruff: venv
+	$(TOOL_PREFIX)ruff check .
+	$(TOOL_PREFIX)ruff format --check --diff .
 
-black: venv
-	$(TOOL_PREFIX)black --diff --check -q .
+format: venv
+	$(TOOL_PREFIX)ruff format .
 
-flake8: venv
-	$(TOOL_PREFIX)flake8 .
 
 mypy: venv
 	$(TOOL_PREFIX)mypy .
@@ -30,12 +29,13 @@ mypy: venv
 test: venv
 	pytest
 
-check: mypy pylint flake8 black test
+check: mypy ruff
 	@echo All checks passed.
 
 .PHONY: venv
 venv:
 	uv sync
 
-clean:
+clean: venv
 	rm -rf ./mypy_cache ./*.egg-info ./.mypy_cache ./__pycache__ ./.pytest_cache ./.venv ./build
+	$(TOOL_PREFIX)ruff clean

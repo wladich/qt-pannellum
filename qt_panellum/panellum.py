@@ -1,15 +1,13 @@
-# coding: utf-8
 import binascii
 import json
 import os
-from typing import TypeAlias
+from typing import NotRequired, TypeAlias, TypedDict
 
 import pkg_resources
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebKit import QWebSettings
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QWidget
-from typing_extensions import NotRequired, TypedDict
 
 
 class Hotspot(TypedDict):
@@ -37,9 +35,9 @@ class Panellum(QWebView):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         settings = self.page().settings()
-        settings.setAttribute(QWebSettings.DeveloperExtrasEnabled, True)
-        settings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, False)
-        settings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)
+        settings.setAttribute(QWebSettings.DeveloperExtrasEnabled, True)  # noqa: FBT003
+        settings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, False)  # noqa: FBT003
+        settings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)  # noqa: FBT003
 
         html_dir = pkg_resources.resource_filename(__name__, "html")
         self.setUrl(QUrl("file://" + os.path.join(html_dir, "index.html")))
@@ -69,7 +67,7 @@ class Panellum(QWebView):
         self.eval_js("client.destroyViewer")
 
     def viewer_command(self, method: str, *args: object) -> object:
-        cmd_args = [method] + list(args)
+        cmd_args = [method, *args]
         return self.eval_js("client.viewerCommand", cmd_args)
 
     def insert_style(self, css: str) -> None:

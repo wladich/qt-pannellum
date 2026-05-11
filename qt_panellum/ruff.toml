@@ -1,0 +1,30 @@
+[lint]
+#preview = true
+exclude = ["panoedit/lib/sunposition/sunposition.py"]
+select = ["ALL"]
+ignore = [
+    # ignore missing docs
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D203", # 1 blank line required before class docstring
+    "D212", # Multi-line docstring summary should start at the first line
+    "S101", # Use of assert detected
+    "COM812", # Trailing comma missing
+    "UP031", # Use format specifiers instead of percent format
+    "PTH", # flake8-use-pathlib
+]
+
+[lint.pycodestyle]
+max-line-length = 97
+
+[lint.isort]
+combine-as-imports = true
+
+[lint.flake8-annotations]
+mypy-init-return = true

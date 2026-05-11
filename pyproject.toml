@@ -5,8 +5,8 @@ requires-python = ">=3.11"
 dependencies = [
     "pyqt5",
     "PyQt5-sip==12.17.2",
-    "typing-extensions==4.*",
     "setuptools<82",
+    "ruff>=0.15.12",
 ]
 
 [tool.uv.sources]
@@ -14,13 +14,10 @@ pyqt5 = { url = "https://github.com/wladich/PyQt_build/releases/download/3.0/PyQ
 
 [dependency-groups]
 dev = [
-    "black==22.10.0",
-    "flake8<6.0.0",
-    "flake8-import-order==0.18.2",
     "mypy>=1.14.1",
-    "pylint==2.15.8",
     "pyqt5-stubs==5.15.6.0",
     "types-setuptools<82",
+    "ruff>=0.15.12",
 ]
 
 [build-system]
