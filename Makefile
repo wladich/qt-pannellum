@@ -5,7 +5,6 @@ Available targets:
 	flake8
 	mypy
 	check - all static checks
-	test - run pytest tests
 	venv - create or update venv for development
 	clean - clean caches
 endef
